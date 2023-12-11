@@ -1,4 +1,7 @@
+from SymbolTable import SymbolTable
+
 class Parser:
+
     comp_codes = {
     '0':   '0101010',
     '1':   '0111111',
@@ -50,17 +53,37 @@ class Parser:
     'JLE':  '110',
     'JMP':  '111'
 }
+
+
+    def __init__(self):
+        #Initialize a symbol table
+        self.symbol_table = SymbolTable()
+
+    #parsing the instruction with only decimal value after '@'
+    def parse_a_instruction_immediate_value(self, instruction):
+        return self.decimal_to_16bit(instruction)
     
-    def __init__(self) -> None:
+    #parsing the instruction with only letter
+    def parse_a_instruction_all_letter(self, instruction):
         pass
-
-    def parse_a_instruction(self, instruction):
-        pass
-
+    
     def parse_c_instruction(self, instruction):
         pass
 
     def parse_L_instruction(self, instruction):
         pass
 
+    #convert string decimal into 16bit string binary value
+    def decimal_to_16bit(self, decimal_value_str):
+        try:
+            decimal_value = int(decimal_value_str)
+        except ValueError:
+            raise ValueError("Invalid decimal value: {}".format(decimal_value_str))
+        
+        binary_string = format(decimal_value, '016b')
+        
+        return binary_string
+    #function check to see if symbol is contained in the table already
+    def is_in_symbol_table(self, symbol):
+        return self.symbol_table.contains(symbol)
     
