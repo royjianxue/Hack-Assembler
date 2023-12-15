@@ -1,24 +1,8 @@
-import SymbolTable
-import Parser
-
-class ASM:
+from Parser import Parser
     
-    def __init__(self):
-        pass
-
-
-    def assemble(code):
-        pass
+parser = Parser('Max.asm')
 
 
 if __name__ == "__main__":
-    # Example usage
-    code = """
-    // This is a sample code
-    @21
-    M=1
-    @i
-    M=M+1;JMP
-    """
-    binary_code = assemble(code.split('\n'))
-    print(binary_code)
+
+    parser.print_queue_contents(parser.firstpass)
