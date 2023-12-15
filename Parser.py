@@ -1,4 +1,6 @@
 from SymbolTable import SymbolTable
+from LabelTable import LabelTable
+from queue import Queue
 
 class Parser:
 
@@ -54,17 +56,51 @@ class Parser:
     'JMP':  '111'
 }
 
-
-    def __init__(self):
-        #Initialize a symbol table
+    def __init__(self, file_path):
         self.symbol_table = SymbolTable()
+        self.label_table = LabelTable()
+        self.prepass = self.pre_pass(file_path)
+        self.firstpass = self.first_pass(self.prepass)
+    
+    #Remove empty lines, and comment lines //
+    def pre_pass(self, file_path):
+        cleaned_code_queue = Queue()
+        with open(file_path, 'r') as asm_file:
+            for line in asm_file:
+                newline = line = line.split('//')[0].strip()
+                if line:
+                    cleaned_code_queue.put(newline)
+        return cleaned_code_queue
 
-    #parsing the instruction with only decimal value after '@'
+    #Add label symbol to the table
+    def first_pass(self, queue):
+        cleaned_code_queue = Queue()
+        order = 0
+        while not queue.empty():
+            line = queue.get()
+            if line.startswith('(') and line.endswith(')'):
+                extracted = line[1:-1]
+                if not self.label_table.contains(extracted):
+                    self.label_table.add_entry(extracted, order)
+            else:
+                cleaned_code_queue.put(line)
+                order += 1
+        return cleaned_code_queue
+
+
+    def print_queue_contents(self, queue):
+        while not queue.empty():
+            print(queue.get())
+
+    #parsing decimal
     def parse_a_instruction_immediate_value(self, instruction):
         return self.decimal_to_16bit(instruction)
     
-    #parsing the instruction with only letter
-    def parse_a_instruction_all_letter(self, instruction):
+    #parsing variable
+    def parse_a_instruction_variable(self, instruction):
+
+
+
         pass
     
     def parse_c_instruction(self, instruction):
