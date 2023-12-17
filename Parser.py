@@ -2,27 +2,41 @@ from SymbolTable import SymbolTable
 from queue import Queue
 
 class Parser:
+    """
+    Class for parsing Hack assembly code.
+
+    Attributes:
+        symbol_table (SymbolTable): An instance of the SymbolTable class.
+        prepass (Queue): A queue containing the pre-processed assembly code.
+        ready_queue (Queue): A queue containing the processed assembly code with labels and removed empty lines.
+    """
 
     def __init__(self, file_path):
         """
         Initializes an instance of Parser.
 
         Args:
-            params:
-                file_path:          .asm file.
-        Vars:
-            instance vars:
-                symbol_table:        returns an instance of SymbolTable
-                prepass:             returns a queue after file processing and removed of empty lines and comments
-                ready_queue:         returns a another queue store label symbol into queue
+            file_path (str): Path to the .asm file.
+
+        Attributes:
+            symbol_table (SymbolTable): Instance of SymbolTable class.
+            prepass (Queue): Queue after file processing, removed of empty lines and comments.
+            ready_queue (Queue): Another queue storing label symbols after processing.
         """
         self.symbol_table = SymbolTable()
         self.prepass = self.pre_process(file_path)
         self.ready_queue = self.label_process(self.prepass)
 
-    #Remove empty lines and comments from the file
-    #Store the lines into queue
     def pre_process(self, file_path):
+        """
+        Removes empty lines and comments from the file and stores the lines into a queue.
+
+        Args:
+            file_path (str): Path to the .asm file.
+
+        Returns:
+            Queue: Queue containing the cleaned lines of code.
+        """
         cleaned_code_queue = Queue()
         with open(file_path, 'r') as asm_file:
             for line in asm_file:
@@ -31,9 +45,18 @@ class Parser:
                     cleaned_code_queue.put(newline)
         return cleaned_code_queue
 
-    #Add label symbol to the table with associated next line address
-    #store every line of code in queue into another queue
+
     def label_process(self, queue):
+        """
+        Adds label symbols to the table with associated next line addresses.
+        Stores every line of code in the queue into another queue.
+
+        Args:
+            queue (Queue): Queue containing the pre-processed lines of code.
+
+        Returns:
+            Queue: Queue containing processed lines of code with labels removed.
+        """
         cleaned_code_queue = Queue()
         order = 0
         while not queue.empty():
@@ -46,14 +69,20 @@ class Parser:
                 cleaned_code_queue.put(line)
                 order += 1
         return cleaned_code_queue
-    
-    #print the queue
-    def print_queue_contents(self, queue):
-        while not queue.empty():
-            print(queue.get())
-
-    #parse comp
+ 
     def comp(self, c_instruction):
+        """
+        Parses the comp part of a C-instruction.
+
+        Args:
+            c_instruction (str): The C-instruction.
+
+        Returns:
+            str: The parsed comp part of the C-instruction.
+
+        Raises:
+            ValueError: If the C-instruction is invalid.
+        """
         equal_index = c_instruction.find('=')
         semicolon_index = c_instruction.find(';')
 
@@ -68,8 +97,20 @@ class Parser:
         else:
             return c_instruction[:semicolon_index]
         
-    #parse dest
+
     def dest(self, c_instruction):
+        """
+        Parses the dest part of a C-instruction.
+
+        Args:
+            c_instruction (str): The C-instruction.
+
+        Returns:
+            str: The parsed dest part of the C-instruction.
+
+        Raises:
+            ValueError: If the C-instruction is invalid.
+        """
         equal_index = c_instruction.find('=')
         if equal_index == 0:
             raise ValueError("Invalid input. C instruction should only start with Letters or decimal")
@@ -78,14 +119,31 @@ class Parser:
         else:
             return ''
         
-    #parse jump
+ 
     def jump(self, c_instruction):
+        """
+        Parses the jump part of a C-instruction.
+
+        Args:
+            c_instruction (str): The C-instruction.
+
+        Returns:
+            str: The parsed jump part of the C-instruction.
+
+        Raises:
+            ValueError: If the C-instruction is invalid.
+        """
         semicolon_index = c_instruction.find(';')
         if semicolon_index < 0:
             return ''
         return c_instruction[semicolon_index+1::]
 
-    #push symbol into table
     def push_symbol(self, symbol):
+        """
+        Pushes a symbol into the symbol table.
+
+        Args:
+            symbol (str): The symbol to be pushed into the symbol table.
+        """
         self.symbol_table.add_entry(symbol)
 
