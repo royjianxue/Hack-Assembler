@@ -61,7 +61,7 @@ L-instructions, or labels, are psuedo commands only used by the assembler to det
 For more information, visit: http://nand2tetris.org/
 
 ## Usage
-$ python ASM.py PongL.asm
+$ python ASM.py <inputfile>.asm
 
 ## Download
 Clone the repository: `git clone https://github.com/royjianxue/hackAssembly.git`
