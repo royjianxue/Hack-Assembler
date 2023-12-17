@@ -64,4 +64,4 @@ For more information, visit: http://nand2tetris.org/
 $ python ASM.py PongL.asm
 
 ## Download
-Get the latest release for Windows.
+Clone the repository: `git clone https://github.com/royjianxue/hackAssembly.git`
