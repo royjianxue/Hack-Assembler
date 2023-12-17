@@ -63,6 +63,9 @@ class Code:
     @staticmethod    
     def dest(dest_str):
         try:
+            if dest_str == '':
+                dest_str = 'null'
+                return Code.dest_codes[dest_str]
             return Code.dest_codes[dest_str]
         except KeyError:
             raise KeyError("Invalid Symbol, check your dest key!")
@@ -86,11 +89,10 @@ class Code:
             decimal_value = int(decimal_value_str)
         except ValueError:
             raise ValueError("Invalid decimal value: {}".format(decimal_value_str))
-        
         binary_string = format(decimal_value, '016b')
         return binary_string
     
 if __name__ == "__main__":
 
     print(Code.compute_decimal_instruction("21"))
-    print("111" + Code.comp('D+1') + Code.dest('MD')+ Code.jump(''))
+    print("111" + Code.comp('D+1') + Code.dest('')+ Code.jump(''))
