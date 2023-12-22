@@ -42,26 +42,33 @@ Below's an example program that determines the larger number of two given number
 A-instructions are addressing instructions, and start with an '@', followed by either a direct address, a location, or a variable. For example:
 
 @100
+
 @LOCATION
+
 @var
 
 C-instructions are compute instructions, and are used for general purpose commands, including storing values, performing computations, and jumping to memory locations. Examples include:
 
 D=A
+
 D=D-M
+
 0; JMP
+
 D; JGT
 
 L-instructions, or labels, are psuedo commands only used by the assembler to determine address locations. These are not converted into machine code. Examples:
 
 (LOOP)
+
 (END)
+
 (JUMP_HERE)
 
 For more information, visit: http://nand2tetris.org/
 
 ## Usage
-$ python ASM.py PongL.asm
+$ python ASM.py input_file_name.asm
 
 ## Download
 Clone the repository: `git clone https://github.com/royjianxue/hackAssembly.git`
