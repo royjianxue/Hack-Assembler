@@ -40,7 +40,7 @@ class Parser:
         cleaned_code_queue = Queue()
         with open(file_path, 'r') as asm_file:
             for line in asm_file:
-                newline = line = line.split('//')[0].strip()
+                newline = line.split('//')[0].strip()
                 if line:
                     cleaned_code_queue.put(newline)
         return cleaned_code_queue
